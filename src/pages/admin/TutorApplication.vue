@@ -1,42 +1,35 @@
 <template>
-  <div class="flex flex-row">
+  <div class="flex flex-row min-h-screen bg-gray-50">
     <SideBar />
-    
+
     <div class="flex flex-col flex-grow">
       <Header @update:search="updateSearchQuery" />
-      <div class="flex space-x-4 mb-3 ml-6 text-lg font-bold">
-        <button
-          @click="currentTab = 'all'"
-          :class="currentTab === 'all' ? 'font-bold underline' : ''"
-        >
-          All
-        </button>
-        <button
-          @click="currentTab = 'Pending'"
-          :class="currentTab === 'Pending' ? 'font-bold underline' : ''"
-        >
-          Pending
-        </button>
-        <button
-          @click="currentTab = 'Accepted'"
-          :class="currentTab === 'Accepted' ? 'font-bold underline' : ''"
-        >
-          Accepted
-        </button>
-        <button
-          @click="currentTab = 'Rejected'"
-          :class="currentTab === 'Rejected' ? 'font-bold underline' : ''"
-        >
-          Rejected
-        </button>
+
+      <div class="px-6 py-4 border-b bg-white">
+        <div class="flex space-x-6 text-lg">
+          <button
+            v-for="tab in tabs"
+            :key="tab.value"
+            @click="currentTab = tab.value"
+            :class="[
+              'px-4 py-2 transition-all duration-200',
+              currentTab === tab.value
+                ? 'text-indigo-700 border-b-2 border-indigo-700 font-medium'
+                : 'text-gray-600 hover:text-indigo-600'
+            ]"
+          >
+            {{ tab.label }}
+          </button>
+        </div>
       </div>
 
-      <!-- Conditional Rendering of Tab Components -->
-      <component 
-        :is="currentComponent" 
-        :current-tab="currentTab" 
-        :search-query="searchQuery" 
-      />
+      <div class="p-6">
+        <component
+          :is="currentComponent"
+          :current-tab="currentTab"
+          :search-query="searchQuery"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -53,6 +46,13 @@ import Header from '@/components/Header.vue';
 
 const currentTab = ref('all');
 const searchQuery = ref('');
+
+const tabs = [
+  { label: 'All', value: 'all' },
+  { label: 'Pending', value: 'Pending' },
+  { label: 'Accepted', value: 'Accepted' },
+  { label: 'Rejected', value: 'Rejected' },
+];
 
 // Update search query
 const updateSearchQuery = (newQuery) => {

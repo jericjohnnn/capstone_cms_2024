@@ -1,35 +1,37 @@
 <template>
   <div class="flex flex-col">
-    <div class="mb-4 ml-6">
-      <div class="flex flex-col flex-grow">
-        <div class="overflow-x-auto">
-          <div class="flex flex-col w-[68rem] space-y-2">
-            <!-- Header Row with Columns -->
-            <div class="flex font-bold text-gray-700 bg-red-300 justify-between rounded-md border-b py-2">
-              <div class="w-10 text-center">ID</div>
-              <div class="w-28 text-center">Full Name</div>
-              <div class="w-16 text-center">Profile Image</div>
-              <div class="w-32 text-center">Address</div>
-              <div class="w-32 text-center">Contact Number</div>
-              <div class="w-28 text-center">Birthdate</div>
-              <div class="w-28 text-center">Offense Status</div>
-              
-            </div>
+    <div class="p-6">
+      <div class="bg-white rounded-lg shadow-sm">
+        <!-- Header with red theme -->
+        <div class="flex font-semibold text-gray-700 bg-red-50 rounded-t-lg border border-red-200 py-3 px-4">
+          <div class="w-10 text-center">ID</div>
+          <div class="w-28 text-center">Full Name</div>
+          <div class="w-16 text-center">Profile Image</div>
+          <div class="w-32 text-center">Address</div>
+          <div class="w-32 text-center">Contact Number</div>
+          <div class="w-28 text-center">Birthdate</div>
+          <div class="w-28 text-center">Offense Status</div>
+        </div>
 
-            <!-- Scrollable Students Data Rows -->
-            <div class="overflow-y-auto max-h-[400px] w-[69rem]">
-              <div v-for="student in filteredStudents" :key="student.user_id" class="flex text-gray-600 justify-between py-2 w-full border-2 rounded-md bg-red-100">
-                <div class="w-10 text-center">{{ student.user_id }}</div>
-                <div class="w-28 text-center">{{ student.first_name }} {{ student.last_name }}</div>
-                <div class="w-16 text-center">
-                  <img :src="student.profile_image" alt="Profile" class="w-8 h-8 rounded-full mx-auto" />
-                </div>
-                <div class="w-32 text-center">{{ student.address }}</div>
-                <div class="w-32 text-center">{{ student.contact_number }}</div>
-                <div class="w-28 text-center">{{ formatDate(student.birthdate) }}</div>
-                <div class="w-28 text-center text-red-600 font-semibold">{{ student.offense_status }}</div>
-                
-              </div>
+        <!-- Scrollable Content -->
+        <div class="overflow-y-auto max-h-[calc(100vh-16rem)]">
+          <div v-for="student in filteredStudents"
+               :key="student.user_id"
+               class="flex items-center border-b border-gray-100 hover:bg-red-50 transition-colors py-2 px-4">
+            <div class="w-10 text-center text-sm">{{ student.user_id }}</div>
+            <div class="w-28 text-center text-sm font-medium">{{ student.first_name }} {{ student.last_name }}</div>
+            <div class="w-16 text-center">
+              <img :src="student.profile_image"
+                   alt="Profile"
+                   class="w-10 h-10 rounded-full mx-auto object-cover border-2 border-red-200" />
+            </div>
+            <div class="w-32 text-center text-sm">{{ student.address }}</div>
+            <div class="w-32 text-center text-sm">{{ student.contact_number }}</div>
+            <div class="w-28 text-center text-sm">{{ formatDate(student.birthdate) }}</div>
+            <div class="w-28 text-center">
+              <span class="px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-700">
+                {{ student.offense_status }}
+              </span>
             </div>
           </div>
         </div>
@@ -67,8 +69,6 @@ const filteredStudents = computed(() => {
     student.contact_number.includes(searchQuery))
   );
 });
-
-
 
 // Fetch students when the component mounts
 onMounted(fetchStudents);

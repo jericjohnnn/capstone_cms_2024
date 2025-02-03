@@ -1,56 +1,78 @@
 <template>
   <div class="flex flex-col">
-    <div class="mb-4 ml-6">
-      <div class="flex flex-col flex-grow">
-        <div class="flex flex-col w-[68rem] space-y-2">
-          <!-- Header Row with Columns -->
-          <div class="flex font-bold text-gray-700 bg-gray-200 justify-between rounded-md border-b py-2">
-            <div class="w-10 text-center">ID</div>
-            <div class="w-28 text-center">Name</div>
-            <div class="w-16 text-center">Profile Image</div>
-            <div class="w-32 text-center">Address</div>
-            <div class="w-36 text-center">Contact Number</div>
-            <div class="w-28 text-center">Birthdate</div>
-            <div class="w-20 text-center">Gender</div>
-            <div class="w-32 text-center">Course And Year</div>
-            <div class="w-28 text-center">School ID Number</div>
-            <div class="w-20 text-center">Tutor Rate</div>
-            <div class="w-28 text-center">Contacted Status</div>
-            <div class="w-28 text-center">Approval Status</div>
-            <div class="w-24 text-center">Actions</div>
-          </div>
+    <div class="mb-6">
+      <!-- Main Table Container -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+        <!-- Header Row -->
+        <div class="flex font-semibold text-gray-700 bg-gray-50 justify-between py-3 px-4 border-b">
+          <div class="w-10 text-center">ID</div>
+          <div class="w-28 text-center">Name</div>
+          <div class="w-16 text-center">Profile</div>
+          <div class="w-32 text-center">Address</div>
+          <div class="w-36 text-center">Contact</div>
+          <div class="w-28 text-center">Birthdate</div>
+          <div class="w-20 text-center">Gender</div>
+          <div class="w-32 text-center">Course</div>
+          <div class="w-28 text-center">School ID</div>
+          <div class="w-20 text-center">Rate</div>
+          <div class="w-28 text-center">Contact Status</div>
+          <div class="w-28 text-center">Status</div>
+          <div class="w-24 text-center">Actions</div>
+        </div>
 
-          <!-- Scrollable Tutor Data Rows Container -->
-          <div class="overflow-y-auto max-h-[400px] w-[69rem]">
-            <div v-for="tutor in filteredTutors" :key="tutor.id" class="flex text-gray-600 justify-between py-2 w-full border-2 rounded-md bg-gray-100">
-              <div class="w-10 text-center">{{ tutor.user_id }}</div>
-              <div class="w-28 text-center">{{ tutor.first_name }} {{ tutor.last_name }}</div>
-              <div class="w-16 text-center">
-                <img :src="tutor.profile_image" alt="Profile" class="w-8 h-8 rounded-full mx-auto" />
-              </div>
-              <div class="w-36 text-center">{{ tutor.address }}</div>
-              <div class="w-32 text-center">{{ tutor.contact_number }}</div>
-              <div class="w-28 text-center">{{ formatDate(tutor.birthdate) }}</div>
-              <div class="w-20 text-center">{{ tutor.gender }}</div>
-              <div class="w-32 text-center">{{ tutor.course }} {{ tutor.year }}</div>
-              <div class="w-28 text-center">{{ tutor.school_id_number }}</div>
-              <div class="w-20 text-center">{{ tutor.tutor_rate }}</div>
-              <div class="w-28 text-center">
-                <button
-                  @click="toggleContactedStatus(tutor)"
-                  :class="tutor.contacted_status ? 'bg-green-500' : 'bg-gray-500'"
-                  class="text-white px-2 py-1 rounded hover:bg-opacity-75"
-                >
-                  {{ tutor.contacted_status ? 'Contacted' : 'Not Contacted' }}
+        <!-- Scrollable Content -->
+        <div class="overflow-y-auto max-h-[calc(100vh-16rem)]">
+          <div v-for="tutor in filteredTutors"
+               :key="tutor.id"
+               class="flex items-center text-gray-600 justify-between py-3 px-4 hover:bg-gray-50 transition-colors border-b last:border-b-0">
+            <div class="w-10 text-center font-medium text-gray-700">{{ tutor.user_id }}</div>
+            <div class="w-28 text-center font-medium">{{ tutor.first_name }} {{ tutor.last_name }}</div>
+            <div class="w-16 text-center">
+              <img :src="tutor.profile_image || defaultAvatar"
+                   :onerror="handleImageError"
+                   alt="Profile"
+                   class="w-8 h-8 rounded-full mx-auto object-cover border-2 border-gray-200" />
+            </div>
+            <div class="w-36 text-center">{{ tutor.address }}</div>
+            <div class="w-32 text-center">{{ tutor.contact_number }}</div>
+            <div class="w-28 text-center">{{ formatDate(tutor.birthdate) }}</div>
+            <div class="w-20 text-center">{{ tutor.gender }}</div>
+            <div class="w-32 text-center">{{ tutor.course }} {{ tutor.year }}</div>
+            <div class="w-28 text-center">{{ tutor.school_id_number }}</div>
+            <div class="w-20 text-center font-medium">₱{{ tutor.tutor_rate }}</div>
+            <div class="w-28 text-center">
+              <button
+                @click="toggleContactedStatus(tutor)"
+                :class="[
+                  'transition-all duration-200 px-3 py-1 rounded-full text-sm font-medium',
+                  tutor.contacted_status
+                    ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ]"
+              >
+                {{ tutor.contacted_status ? 'Contacted' : 'Not Contacted' }}
+              </button>
+            </div>
+            <div class="w-28 text-center">
+              <span :class="{
+                'px-2 py-1 rounded-full text-sm font-medium': true,
+                'bg-yellow-100 text-yellow-700': tutor.approval_status === 'Pending',
+                'bg-green-100 text-green-700': tutor.approval_status === 'Accepted',
+                'bg-red-100 text-red-700': tutor.approval_status === 'Rejected'
+              }">
+                {{ tutor.approval_status }}
+              </span>
+            </div>
+            <div class="w-24 text-center">
+              <div v-if="tutor.approval_status === 'Pending'" class="space-y-1">
+                <button @click="acceptTutor(tutor.id)"
+                        class="w-full bg-green-500 text-white px-3 py-1 rounded-md text-sm font-medium hover:bg-green-600 transition-colors">
+                  Accept
                 </button>
-              </div>
-
-              <div class="w-28 text-center">{{ tutor.approval_status }}</div>
-              <div class="w-24 text-center">
-                <div v-if="tutor.approval_status === 'Pending'">
-                  <button @click="acceptTutor(tutor.id)" class="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 mb-1">Accept</button>
-                  <button @click="rejectTutor(tutor.id)" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">Reject</button>
-                </div>
+                <button @click="rejectTutor(tutor.id)"
+                        class="w-full bg-red-500 text-white px-3 py-1 rounded-md text-sm font-medium hover:bg-red-600 transition-colors">
+                  Reject
+                </button>
               </div>
             </div>
           </div>
@@ -63,6 +85,7 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue';
 import axiosInstance from '@/axiosInstance';
+import defaultAvatar from '@/assets/default-avatar.svg'
 
 const tutors = ref([]);
 const currentTab = ref('all');
