@@ -28,7 +28,6 @@
             <div class="w-28 text-center font-medium">{{ tutor.first_name }} {{ tutor.last_name }}</div>
             <div class="w-16 text-center">
               <img :src="tutor.profile_image || defaultAvatar"
-                   :onerror="handleImageError"
                    alt="Profile"
                    class="w-8 h-8 rounded-full mx-auto object-cover border-2 border-gray-200" />
             </div>
