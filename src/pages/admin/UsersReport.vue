@@ -18,14 +18,6 @@
           ]"
         >
           {{ tab.label }}
-          <span
-            :class="[
-              'ml-2 px-2 py-0.5 rounded-full text-xs',
-              currentTab === tab.value ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-600'
-            ]"
-          >
-            {{ tab.count || 0 }}
-          </span>
         </button>
       </div>
 

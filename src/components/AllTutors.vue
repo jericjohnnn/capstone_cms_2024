@@ -68,7 +68,7 @@
                         class="w-full bg-blue-500 text-white px-3 py-1 rounded-md text-sm font-medium hover:bg-blue-600 transition-colors">
                   Edit
                 </button>
-                <button @click="deleteTutor(tutor.id)"
+                <button @click="deleteTutor(tutor.user_id)"
                         class="w-full bg-red-500 text-white px-3 py-1 rounded-md text-sm font-medium hover:bg-red-600 transition-colors">
                   Delete
                 </button>
@@ -131,7 +131,7 @@ async function editTutor(tutorId) {
 // Delete tutor function
 async function deleteTutor(tutorId) {
   try {
-    await axiosInstance.delete(`/api/admin/delete-tutor/${tutorId}`);
+    await axiosInstance.delete(`/api/delete-user/${tutorId}`);
     tutors.value = tutors.value.filter(t => t.id !== tutorId);
   } catch (error) {
     console.error('Error deleting tutor:', error);
