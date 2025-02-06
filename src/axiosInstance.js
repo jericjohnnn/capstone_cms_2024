@@ -2,7 +2,8 @@ import axios from 'axios'
 
 // Create an Axios instance
 const axiosInstance = axios.create({
-  baseURL: 'http://127.0.0.1:8000/', // Your API base URL
+  // baseURL: 'http://127.0.0.1:8000/',
+  baseURL: 'https://capstonebackend2024-production.up.railway.app/',
 })
 
 // Add a request interceptor
