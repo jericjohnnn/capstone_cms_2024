@@ -37,7 +37,7 @@ import { useRouter } from 'vue-router'
 import axiosInstance from '@/axiosInstance'
 
 // State for form inputs and error handling
-const email = ref('')
+const email = ref('') 
 const password = ref('')
 const errorMessage = ref('')
 
