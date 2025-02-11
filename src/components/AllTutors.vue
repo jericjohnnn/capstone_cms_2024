@@ -64,10 +64,6 @@
             </div>
             <div class="w-24 text-center">
               <div class="space-y-1">
-                <button @click="editTutor(tutor.id)"
-                        class="w-full bg-blue-500 text-white px-3 py-1 rounded-md text-sm font-medium hover:bg-blue-600 transition-colors">
-                  Edit
-                </button>
                 <button @click="deleteTutor(tutor.user_id)"
                         class="w-full bg-red-500 text-white px-3 py-1 rounded-md text-sm font-medium hover:bg-red-600 transition-colors">
                   Delete
