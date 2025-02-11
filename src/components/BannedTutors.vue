@@ -15,6 +15,7 @@
           <div class="w-28 text-center">School ID Number</div>
           <div class="w-20 text-center">Tutor Rate</div>
           <div class="w-20 text-center">Offense Status</div>
+          <div class="w-32 text-center">Account Actions</div>
         </div>
 
         <!-- Content with red hover -->
@@ -38,6 +39,15 @@
               <span class="px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-700">
                 {{ tutor.offense_status }}
               </span>
+            </div>
+            <div class="w-32 text-center space-x-2">
+              <button class="bg-blue-500 text-white px-3 py-1 rounded-md text-sm font-medium hover:bg-blue-600 transition-colors">
+                Edit
+              </button>
+              <button @click="deleteTutor(tutor.user_id)"
+                      class="bg-red-500 text-white px-3 py-1 rounded-md text-sm font-medium hover:bg-red-600 transition-colors">
+                Delete
+              </button>
             </div>
           </div>
         </div>
@@ -74,11 +84,12 @@ async function fetchTutors() {
 }
 
 
-// Update tutor status locally
-function updateTutorStatus(tutorId, status) {
-  const tutor = tutors.value.find(t => t.id === tutorId);
-  if (tutor) {
-    tutor.offense_status_status = status;
+async function deleteTutor(tutorId) {
+  try {
+    await axiosInstance.delete(`/api/delete-user/${tutorId}`);
+    await fetchTutors();
+  } catch (error) {
+    console.error('Error deleting tutor:', error);
   }
 }
 

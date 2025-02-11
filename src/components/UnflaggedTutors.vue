@@ -46,7 +46,8 @@
               <button class="bg-blue-500 text-white px-3 py-1 rounded-md text-sm font-medium hover:bg-blue-600 transition-colors">
                 Edit
               </button>
-              <button class="bg-red-500 text-white px-3 py-1 rounded-md text-sm font-medium hover:bg-red-600 transition-colors">
+              <button @click="deleteTutor(tutor.user_id)"
+               class="bg-red-500 text-white px-3 py-1 rounded-md text-sm font-medium hover:bg-red-600 transition-colors">
                 Delete
               </button>
             </div>
@@ -85,15 +86,14 @@ async function fetchTutors() {
 }
 
 
-// Update tutor status locally
-function updateTutorStatus(tutorId, status) {
-  const tutor = tutors.value.find(t => t.id === tutorId);
-  if (tutor) {
-    tutor.offense_status_status = status;
+async function deleteTutor(tutorId) {
+  try {
+    await axiosInstance.delete(`/api/delete-user/${tutorId}`);
+    await fetchTutors();
+  } catch (error) {
+    console.error('Error deleting tutor:', error);
   }
 }
-
-
 
 
 // Format date for display

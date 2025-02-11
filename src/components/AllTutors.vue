@@ -132,7 +132,7 @@ async function editTutor(tutorId) {
 async function deleteTutor(tutorId) {
   try {
     await axiosInstance.delete(`/api/delete-user/${tutorId}`);
-    tutors.value = tutors.value.filter(t => t.id !== tutorId);
+    await fetchTutors();
   } catch (error) {
     console.error('Error deleting tutor:', error);
   }
