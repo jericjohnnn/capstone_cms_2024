@@ -42,11 +42,7 @@
             </div>
             <div class="w-24 text-center">
               <div class="space-y-1">
-                <button @click="editStudent(student.id)"
-                        class="w-full bg-blue-500 text-white px-3 py-1 rounded-md text-sm font-medium hover:bg-blue-600 transition-colors">
-                  Edit
-                </button>
-                <button @click="deleteStudent(student.id)"
+                <button @click="deleteStudent(student.user_id)"
                         class="w-full bg-red-500 text-white px-3 py-1 rounded-md text-sm font-medium hover:bg-red-600 transition-colors">
                   Delete
                 </button>
@@ -78,17 +74,11 @@ async function fetchStudents() {
   }
 }
 
-// Edit student function
-async function editStudent(studentId) {
-  // Implement edit functionality
-  console.log('Edit student:', studentId);
-}
-
 // Delete student function
 async function deleteStudent(studentId) {
   try {
-    await axiosInstance.delete(`/api/admin/delete-student/${studentId}`);
-    students.value = students.value.filter(s => s.id !== studentId);
+    await axiosInstance.delete(`/api/delete-user/${studentId}`);
+    await fetchStudents();
   } catch (error) {
     console.error('Error deleting student:', error);
   }

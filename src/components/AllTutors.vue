@@ -119,10 +119,10 @@ async function toggleContactedStatus(tutor) {
 }
 
 // Edit tutor function
-async function editTutor(tutorId) {
-  // Implement edit functionality
-  console.log('Edit tutor:', tutorId);
-}
+// async function editTutor(tutorId) {
+//   // Implement edit functionality
+//   console.log('Edit tutor:', tutorId);
+// }
 
 // Delete tutor function
 async function deleteTutor(tutorId) {

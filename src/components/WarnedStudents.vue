@@ -35,10 +35,8 @@
               </span>
             </div>
             <div class="w-20 text-center space-x-2">
-              <button class="bg-blue-500 text-white px-3 py-1 rounded-md text-sm font-medium hover:bg-blue-600 transition-colors">
-                Edit
-              </button>
-              <button class="bg-red-500 text-white px-3 py-1 rounded-md text-sm font-medium hover:bg-red-600 transition-colors">
+              <button @click="deleteStudent(student.user_id)"
+                      class="bg-red-500 text-white px-3 py-1 rounded-md text-sm font-medium hover:bg-red-600 transition-colors">
                 Delete
               </button>
             </div>
@@ -78,6 +76,16 @@ const filteredStudents = computed(() => {
     student.contact_number.includes(searchQuery))
   );
 });
+
+// Delete student function
+async function deleteStudent(studentId) {
+  try {
+    await axiosInstance.delete(`/api/delete-user/${studentId}`);
+    await fetchStudents();
+  } catch (error) {
+    console.error('Error deleting student:', error);
+  }
+}
 
 // Fetch students when the component mounts
 onMounted(fetchStudents);

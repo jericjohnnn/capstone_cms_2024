@@ -33,6 +33,12 @@
                 {{ student.offense_status }}
               </span>
             </div>
+            <div class="w-32 text-center space-x-2">
+              <button @click="deleteStudent(student.user_id)"
+                      class="bg-red-500 text-white px-3 py-1 rounded-md text-sm font-medium hover:bg-red-600 transition-colors">
+                Delete
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -72,6 +78,15 @@ const filteredStudents = computed(() => {
 
 // Fetch students when the component mounts
 onMounted(fetchStudents);
+
+async function deleteStudent(studentId) {
+  try {
+    await axiosInstance.delete(`/api/delete-user/${studentId}`);
+    await fetchStudents();
+  } catch (error) {
+    console.error('Error deleting student:', error);
+  }
+}
 </script>
 
 <style scoped>
